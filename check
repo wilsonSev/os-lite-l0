@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -eu
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+if [ "$#" -gt 1 ]; then
+    echo 'Usage: ./check [--local|--docker]' >&2
+    exit 2
+fi
+case "${1:---local}" in
+    --local) exec sh "$ROOT/scripts/demo-check.sh" "$ROOT/src" ;;
+    --docker)
+        command -v docker >/dev/null 2>&1 || { echo 'Docker is unavailable; use ./check --local.' >&2; exit 2; }
+        # Preload this image before class. Never pull over classroom Wi-Fi.
+        exec docker run --pull=never --rm \
+            -v "$ROOT/src:/workspace/src:ro" \
+            -v "$ROOT/scripts/demo-check.sh:/demo-check.sh:ro" \
+            alpine:3.20 sh /demo-check.sh /workspace/src
+        ;;
+    *) echo 'Usage: ./check [--local|--docker]' >&2; exit 2 ;;
+esac

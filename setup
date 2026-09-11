@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -eu
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+for tool in bash cat cp mkdir rm dirname grep cut sort uniq head tail wc cmp sleep date; do
+    command -v "$tool" >/dev/null 2>&1 || { echo "Missing tool: $tool" >&2; exit 2; }
+done
+"$ROOT/reset-demo"
+"$ROOT/check"
+printf '%s\n' 'Shell demo ready. Docker is NOT checked or installed. Read lecturer/preparation.md, then lecturer/runbook.md.'

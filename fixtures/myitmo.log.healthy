@@ -1,0 +1,3 @@
+2026-09-14T08:59:51Z INFO endpoint=/health status=200 event=health_ok
+2026-09-14T08:59:53Z INFO endpoint=/courses status=200 event=courses_listed
+2026-09-14T08:59:55Z INFO endpoint=/enroll status=200 event=course_selected

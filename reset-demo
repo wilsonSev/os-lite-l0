@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -eu
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+cd "$ROOT"
+mkdir -p .runtime logs
+# The same lock serializes reset and the writer. Never signal a PID from a file.
+if ! mkdir .runtime/log.lock 2>/dev/null; then
+    echo 'Log is busy. Stop the generator (Ctrl-C, or kill "$GEN_PID"; wait "$GEN_PID") and retry.' >&2
+    echo 'After an abnormal shutdown, see README: stale lock.' >&2
+    exit 2
+fi
+trap 'rmdir "$ROOT/.runtime/log.lock"' EXIT
+cp fixtures/myitmo.log.initial logs/myitmo.log
+cp 'fixtures/files/my log.txt' 'my log.txt'
+cp fixtures/files/exists.txt exists.txt
+rm -f output.txt errors.txt combined.txt missing.txt
+printf '%s\n' 'Demo reset: 10000 lines, 5 ERROR. src/ is preserved.'

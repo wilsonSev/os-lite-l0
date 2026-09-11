@@ -1,0 +1,9 @@
+/logs/
+/.runtime/
+/output.txt
+/errors.txt
+/combined.txt
+/my log.txt
+/exists.txt
+/missing.txt
+.DS_Store
